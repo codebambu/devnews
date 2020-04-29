@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer News</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    ul {
+      font-size: 12px;
+    }
+
+    li {
+      color: darkgrey;
+    }
+
+    a {
+      text-decoration: none;
+    }
+    h3{
+      margin: 0;
+    }
+    .bar {
+      background: lightgreen;
+      color: #111;
+      padding: 5px;
+    }
+    .date,
+    .host {
+      font-size: 12px;
+      color: grey;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="bar">
+      <h3><strong>Developer News</strong></h3>
+    </div>
+    <div v-if="feed">
+      <ol>
+        <li v-for="feed_item in feed">
+          <a v-bind:href="feed_item.link" target="_blank">{{ feed_item.title }}</a> <span
+            class="host">({{ feed_item.host }})</span>
+          <br>
+          <span class="date">{{ fromNow(feed_item.date) }}</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          feed: null
+        }
+      },
+      methods: {
+        fromNow: function (dateString) {
+          return moment(dateString).fromNow()
+        }
+      },
+      mounted() {
+        axios
+          .get('feed')
+          .then(response => (this.feed = response.data))
+      }
+    })
+  </script>
+</body>
+
+</html>
