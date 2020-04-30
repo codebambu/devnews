@@ -83,7 +83,7 @@ def build_feed(xml_sources)
     feeds << feed
   end
 
-  feeds.flatten!
+  feeds.flatten!.shuffle
 end
 
 def export_feed(feed)
