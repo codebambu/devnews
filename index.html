@@ -47,23 +47,13 @@
       margin: 0;
       margin-bottom: 3px;
     }
-    .updated_at {
-      color: green;
-      font-weight: normal;
-    }
-    .right {
-      float: right;
-    }
   </style>
 </head>
 
 <body>
   <div id="app">
     <div class="bar">
-      <h3><strong>Developer News</strong>
-        <span class="small updated_at right">Updated @ {{ stats.updated_at }}</span>
-      </h3>
-      
+      <h3><strong>Developer News</strong></h3>
     </div>
     <div v-if="feed">
       <ol>
@@ -75,6 +65,9 @@
           </p>
         </li>
       </ol>
+      <center>
+        <span class="small">Updated @ {{ stats.updated_at }}</span>
+      </center>
     </div>
   </div>
 
@@ -97,7 +90,7 @@
           .get('feed')
           .then(response => (this.feed = response.data))
 
-          axios
+        axios
           .get('stats')
           .then(response => (this.stats = response.data))
       }
