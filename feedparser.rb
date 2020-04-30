@@ -5,6 +5,7 @@ require 'active_support/core_ext/hash'
 require 'sinatra'
 
 feeds = []
+
 xml_sources = [
   {
     'id' => 'hackernews',
@@ -93,17 +94,30 @@ def export_feed(feed)
   end
 end
 
+def export_stats
+  stats = {
+    'updated_at' => Time.now
+  }
+
+  File.open('stats.json', 'w') do |file|
+    if (file.write(stats.to_json))
+      puts "Written stats to JSON"
+    end
+  end
+end
+
 def build_and_export_feed(xml_sources)
   feed = build_feed(xml_sources)
   export_feed(feed)
+  export_stats
 end
 
 build_and_export_feed(xml_sources)
 
 Thread.new do
   while true do
-    sleep 60 * 30
-    build_and_export_feed
+    sleep 60 * 5
+    build_and_export_feed(xml_sources)
   end
 end
 
@@ -113,4 +127,8 @@ end
 
 get '/feed' do
   File.open('feed.json').read
+end
+
+get '/stats' do
+  File.open('stats.json').read
 end

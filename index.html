@@ -34,10 +34,11 @@
       background: lightgreen;
       color: #111;
       padding: 5px;
+      display: inline-block;
+      width: 100%;
     }
 
-    .date,
-    .host {
+    .small {
       font-size: 12px;
       color: grey;
     }
@@ -46,20 +47,30 @@
       margin: 0;
       margin-bottom: 3px;
     }
+    .updated_at {
+      color: green;
+      font-weight: normal;
+    }
+    .right {
+      float: right;
+    }
   </style>
 </head>
 
 <body>
   <div id="app">
     <div class="bar">
-      <h3><strong>Developer News</strong></h3>
+      <h3><strong>Developer News</strong>
+        <span class="small updated_at right">Updated @ {{ stats.updated_at }}</span>
+      </h3>
+      
     </div>
     <div v-if="feed">
       <ol>
         <li v-for="feed_item in feed">
           <a v-bind:href="feed_item.link" target="_blank">{{ feed_item.title }}</a> <span
-            class="host">({{ feed_item.host }})</span>
-          <p class="date">
+            class="small">({{ feed_item.host }})</span>
+          <p class="small date">
             {{ fromNow(feed_item.date) }}
           </p>
         </li>
@@ -72,7 +83,8 @@
       el: '#app',
       data() {
         return {
-          feed: null
+          feed: null,
+          stats: null
         }
       },
       methods: {
@@ -84,6 +96,10 @@
         axios
           .get('feed')
           .then(response => (this.feed = response.data))
+
+          axios
+          .get('stats')
+          .then(response => (this.stats = response.data))
       }
     })
   </script>
