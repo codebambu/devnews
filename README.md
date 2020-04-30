@@ -1,3 +1,3 @@
-# News
+# Developer News
 
 demo: https://news-codebambu.herokuapp.com/
