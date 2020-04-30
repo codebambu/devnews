@@ -116,7 +116,7 @@ build_and_export_feed(xml_sources)
 
 Thread.new do
   while true do
-    sleep 60 * 5
+    sleep 60 * 15
     build_and_export_feed(xml_sources)
   end
 end
