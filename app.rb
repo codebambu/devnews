@@ -53,30 +53,42 @@ def build_feed(xml_sources)
     case xml_source_id
     when 'hackernews'
       json['rss']['channel']['item'].each do |item|
-        title = item['title']
-        link = item['link']
-        date = item['pubDate']
-        host = URI.parse(link).host.sub('www.', '')
-        feed_item = build_feed_item(title, link, date, host)
-        feed << feed_item
+        begin
+          title = item['title']
+          link = item['link']
+          date = item['pubDate'] 
+          host = URI.parse(link).host.sub('www.', '')
+          feed_item = build_feed_item(title, link, date, host)
+          feed << feed_item
+        rescue URI::InvalidURIError => e
+          # do nothing
+        end
       end
     when 'reddit'
       json['feed']['entry'].each do |item|
-        title = item['title']
-        link = item['link']['href']
-        date = item['updated']
-        host = URI.parse(link).host.sub('www.', '')
-        feed_item = build_feed_item(title, link, date, host)
-        feed << feed_item
+        begin
+          title = item['title']
+          link = item['link']['href']
+          date = item['updated']
+          host = URI.parse(link.sub(',','')).host.sub('www.', '')
+          feed_item = build_feed_item(title, link, date, host)
+          feed << feed_item
+        rescue URI::InvalidURIError
+          # do nothing
+        end
       end
     when 'slashdot'
       json['RDF']['item'].each do |item|
-        title = item['title']
-        link = item['origLink']
-        date = item['date']
-        host = URI.parse(link).host.sub('www.', '')
-        feed_item = build_feed_item(title, link, date, host)
-        feed << feed_item
+        begin
+          title = item['title']
+          link = item['origLink']
+          date = item['date']
+          host = URI.parse(link).host.sub('www.', '')
+          feed_item = build_feed_item(title, link, date, host)
+          feed << feed_item
+        rescue URI::InvalidURIError
+          # do nothing
+        end
       end
     else
     end

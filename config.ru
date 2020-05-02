@@ -1,2 +1,2 @@
-require './feedparser'
+require './app'
 run Sinatra::Application
