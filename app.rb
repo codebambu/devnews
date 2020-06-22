@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'json'
 require 'active_support/core_ext/hash'
 require 'sinatra'
+require 'pp'
 
 feeds = []
 
@@ -18,6 +19,10 @@ xml_sources = [
   {
     'id' => 'reddit',
     'url' => 'https://www.reddit.com/r/programming.rss'
+  },
+  {
+    'id' => 'lobsters',
+    'url' => 'https://lobste.rs/rss'
   }
 ]
 
@@ -83,6 +88,19 @@ def build_feed(xml_sources)
           title = item['title']
           link = item['origLink']
           date = item['date']
+          host = URI.parse(link).host.sub('www.', '')
+          feed_item = build_feed_item(title, link, date, host)
+          feed << feed_item
+        rescue URI::InvalidURIError
+          # do nothing
+        end
+      end
+    when 'lobsters'
+      json['rss']['channel']['item'].each do |item|
+        begin
+          title = item['title']
+          link = item['link']
+          date = item['pubDate']
           host = URI.parse(link).host.sub('www.', '')
           feed_item = build_feed_item(title, link, date, host)
           feed << feed_item
