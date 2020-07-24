@@ -16,10 +16,10 @@ xml_sources = [
     'id' => 'slashdot',
     'url' => 'http://rss.slashdot.org/Slashdot/slashdotDevelopers'
   },
-  {
-    'id' => 'reddit',
-    'url' => 'https://www.reddit.com/r/programming.rss'
-  },
+  # {
+  #  'id' => 'reddit',
+  #  'url' => 'https://www.reddit.com/r/programming.rss'
+  #},
   {
     'id' => 'lobsters',
     'url' => 'https://lobste.rs/rss'
